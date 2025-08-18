@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;iframe srcdoc="</p>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset='UTF-8'&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>body {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: sans-serif;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex-direction: column;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>align-items: center;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>justify-content: center;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: 100vh;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 0;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#time {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 3em;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 20px 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>button {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 10px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 1.2em;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: #0078d7;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;⏰ タイマー&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id='time'&gt;00:00&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;input type='number' id='minutes' placeholder='分を入力' min='1' style='font-size:1.2em;'&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button onclick='startTimer()'&gt;開始&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;audio id='chime'&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;source src='https://www.soundjay.com/button/sounds/beep-07.mp3' type='audio/mpeg'&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/audio&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let timer;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function startTimer() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>clearInterval(timer);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let mins = document.getElementById('minutes').value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let seconds = mins * 60;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>timer = setInterval(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let m = Math.floor(seconds / 60);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let s = seconds % 60;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('time').textContent =<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (seconds &lt;= 0) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>clearInterval(timer);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById('chime').play();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>alert('⏰ タイマー終了！');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>seconds--;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}, 1000);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+<p class="p1">" style="width:100%; height:300px; border:none;"&gt;&lt;/iframe&gt;</p>
+</body>
+</html>
