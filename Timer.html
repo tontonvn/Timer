@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Notionタイマー</title>
+<style>
+  :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  body { margin: 0; padding: 16px; display: grid; place-items: start center; }
+  .wrap { width: 100%; max-width: 520px; text-align: center; }
+  h1 { margin: 8px 0 16px; font-size: 22px; }
+  #time { font-size: 56px; letter-spacing: 2px; margin: 12px 0 20px; }
+  .row { display: flex; gap: 8px; justify-content: center; align-items: center; margin-bottom: 8px; }
+  input[type=number] { width: 110px; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; }
+  button { padding: 10px 16px; font-size: 16px; border-radius: 10px; border: 0; cursor: pointer; background:#0ea5e9; color:#fff; }
+  button:disabled { opacity: .6; cursor: not-allowed; }
+  .presets { display:flex; gap:8px; justify-content:center; margin-top:8px; flex-wrap: wrap; }
+  .pill { border:1px solid #ddd; padding:6px 10px; border-radius:999px; cursor:pointer; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>⏰ タイマー</h1>
+    <div id="time">00:00</div>
+
+    <div class="row">
+      <input type="number" id="minutes" placeholder="分を入力 (例: 5)" min="1" />
+      <button id="startBtn">開始</button>
+      <button id="stopBtn" disabled>停止</button>
+    </div>
+
+    <div class="presets">
+      <span class="pill" data-min="3">3分</span>
+      <span class="pill" data-min="5">5分</span>
+      <span class="pill" data-min="10">10分</span>
+      <span class="pill" data-min="15">15分</span>
+    </div>
+
+    <audio id="chime">
+      <!-- 空港チャイム音源URLに差し替え可 -->
+      <source src="https://www.soundjay.com/button/sounds/beep-07.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+<script>
+let timerId = null, remain = 0;
+const timeEl = document.getElementById('time');
+const minEl  = document.getElementById('minutes');
+const start  = document.getElementById('startBtn');
+const stopB  = document.getElementById('stopBtn');
+const chime  = document.getElementById('chime');
+
+function format(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+function tick(){
+  timeEl.textContent = format(remain);
+  if(remain <= 0){
+    clearInterval(timerId); timerId=null;
+    start.disabled = false; stopB.disabled = true;
+    try { chime.currentTime = 0; chime.play(); } catch(e){}
+    alert('⏰ タイマー終了！');
+    return;
+  }
+  remain -= 1;
+}
+function startTimer(minutes){
+  if(minutes && minutes>0) minEl.value = minutes;
+  const mins = parseInt(minEl.value,10);
+  if(!mins || mins<=0) { alert('分数を入力してください'); return; }
+  remain = mins * 60;
+  if(timerId) clearInterval(timerId);
+  tick();
+  timerId = setInterval(tick, 1000);
+  start.disabled = true; stopB.disabled = false;
+}
+function stopTimer(){
+  if(timerId){ clearInterval(timerId); timerId=null; }
+  start.disabled = false; stopB.disabled = true;
+}
+start.addEventListener('click', ()=>startTimer());
+stopB.addEventListener('click', stopTimer);
+document.querySelectorAll('.pill').forEach(p=>{
+  p.addEventListener('click', ()=> startTimer(parseInt(p.dataset.min,10)));
+});
+</script>
+</body>
+</html>
